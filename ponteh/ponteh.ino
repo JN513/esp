@@ -1,11 +1,11 @@
 #include <Arduino.h>
 // Definindo pinos do NodeMcu para driver Ponte H
 // Pinos de controle motor A
-int IN1 = D4;
-int IN2 = D3;
+int IN1 = 12;
+int IN2 = 14;
 // Pinos de controle motor B
-int IN3 = D2;
-int IN4 = D1;
+int IN3 = 27;
+int IN4 = 26;
  
 void setup(){
     //Define os pinos como saida
@@ -55,4 +55,5 @@ void loop(){
     digitalWrite(IN3, HIGH);
     digitalWrite(IN4, HIGH);
     delay(500); //aguarda 500ms
+    analogWrite(IN3, 2000);
 }
