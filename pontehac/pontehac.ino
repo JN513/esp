@@ -8,34 +8,46 @@ int IN2 = 14;
 // Pinos de controle motor B
 int IN3 = 27;
 int IN4 = 26;
- 
+
+const int freq = 1000;
+const int resolution = 12;
+
 void setup(){
     //Define os pinos como saida
     pinMode(IN1, OUTPUT);
     pinMode(IN2, OUTPUT);
     pinMode(IN3, OUTPUT);
     pinMode(IN4, OUTPUT);
+
+    ledcSetup(0, freq, resolution);
+    ledcSetup(1, freq, resolution);
+    ledcSetup(2, freq, resolution);
+    ledcSetup(3, freq, resolution);
+
+    ledcAttachPin(IN1, 0);
+    ledcAttachPin(IN2, 1);
+    ledcAttachPin(IN3, 2);
+    ledcAttachPin(IN4, 3);
+
 }
  
 void loop(){
         //Para o motor A
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, HIGH);
+    ledcWrite(2, 4094);
+    ledcWrite(3, 4094);
     delay(500);//aguarda 500 ms
 
-    digitalWrite(IN1, LOW);
-    for(int i = 0; i < 4095; i++){
-        analogWrite(IN2, i);
-        delay(10);
-    }
+    ledcWrite(2, 0);
+    ledcWrite(3 , 4094);
 
-    digitalWrite(IN1, HIGH);
-    digitalWrite(IN2, HIGH);
+    delay(5000);
+
+    ledcWrite(2, 4094);
+    ledcWrite(3, 4094);
     delay(500);//aguarda 500 ms
 
-    digitalWrite(IN2, LOW);
-    for(int i = 0; i < 4095; i++){
-        analogWrite(IN1, i);
-        delay(500);
-    }
+    ledcWrite(3, 0);
+    ledcWrite(2 , 4094);
+
+    delay(5000);
 }

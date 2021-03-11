@@ -55,5 +55,5 @@ void loop(){
     digitalWrite(IN3, HIGH);
     digitalWrite(IN4, HIGH);
     delay(500); //aguarda 500ms
-    analogWrite(IN3, 2000);
+
 }
