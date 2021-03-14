@@ -1,23 +1,36 @@
-#include <Ultrasonic.h>
 #include <Arduino.h>
-#include <analogWrite.h> 
-//conexão dos pinos para o sensor ultrasonico
-#define PORTA_TRIGGER   35
-#define PORTA_ECHO      34
- 
-//Inicializa o sensor nos pinos definidos acima
-Ultrasonic ultrasonic1(PORTA_TRIGGER, PORTA_ECHO);
-// declarar variável distancia do tipo inteiro sem sinal
- 
+
+const int trigPin = 4;
+const int echoPin = 5;
+
+long duration;
+int distance;
+
 void setup(){
+    pinMode(trigPin, OUTPUT); 
+    pinMode(echoPin, INPUT);
     // Inicializa
     Serial.begin(115200);
 }
  
  
-void loop()
-{
-    Serial.print(ultrasonic1.read()); // Prints the distance on the default unit (centimeters)
-    Serial.println("cm");
-    delay(500);
+void loop(){
+    distance = calculateDistance();
+    Serial.print("Distancia: ");
+    Serial.print(distance);
+    Serial.println(".");
+
+    delay(2000);
+}
+
+int calculateDistance(){   
+    digitalWrite(trigPin, LOW); 
+    delayMicroseconds(2);
+    // Define o trigPin no estado HIGH por 10 micro segundos
+    digitalWrite(trigPin, HIGH); 
+    delayMicroseconds(10);
+    digitalWrite(trigPin, LOW);
+    duration = pulseIn(echoPin, HIGH); // Lê o echoPin, retorna o tempo de viagem da onda sonora em microssegundos
+    distance= duration*0.034/2;
+    return distance;
 }

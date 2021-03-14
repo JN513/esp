@@ -1,17 +1,7 @@
-import serial
-import time
-import bluetooth
- 
-def search():
-    devices = bluetooth.discover_devices(duration=20, lookup_names = True)
-    return devices
+from bluetooth.ble import DiscoveryService
 
-while True:
-    print("[SCAN] Scan BLE sendo realizado. Aguarde...")
-    results = search()
-    print("[SCAN] Fim do scan BLE.")
-    if (results!=None):
-        for addr, name in results:
-            print("Dispositivo encontrado: {0} - {1}".format(addr, name))
-    time.sleep(1)
-    print(" ")
+service = DiscoveryService()
+devices = service.discover(2)
+
+for address, name in devices.items():
+    print("name: {}, address: {}".format(name, address))

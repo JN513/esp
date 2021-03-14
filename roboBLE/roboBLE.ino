@@ -18,6 +18,8 @@ const int IN2 = 14;
 const int IN3 = 27;
 const int IN4 = 26;
 
+bool deviceConnected = false;
+
 Motors Robo(IN1, IN2, IN3, IN4, 4095, 1000, 12, 0, 1, 2, 3);
 
 char key, previouskey = ' ';
@@ -130,6 +132,18 @@ void move(char carc){
     }
 }
 
+class MyServerCallbacks: public BLEServerCallbacks {
+    void onConnect(BLEServer* pServer) {
+        Serial.println("Conectado");
+        deviceConnected = true;
+    };
+ 
+    void onDisconnect(BLEServer* pServer) {
+        Serial.println("Desconectado");
+        deviceConnected = false;
+    }
+};
+
 class Callbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
         std::string value = pCharacteristic->getValue();
@@ -154,6 +168,7 @@ void setup() {
 
     BLEDevice::init("Robo");
     BLEServer *pServer = BLEDevice::createServer();
+    pServer->setCallbacks(new MyServerCallbacks());
 
     BLEService *pService = pServer->createService(SERVICE_UUID);
 
