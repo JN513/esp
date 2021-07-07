@@ -1,27 +1,55 @@
 #include <Arduino.h>
-#include <analogWrite.h> 
+#include <Motors.h>
 
-const int sensorLinha1 = 1;
-const int sensorLinha2 = 1;
-const int sensorLinha3 = 1;
-const int sensorLinha4 = 1;
+// Definindo pinos do NodeMcu para driver Ponte H
+// Pinos de controle motor A
+const int IN1 = 12;
+const int IN2 = 14;
+// Pinos de controle motor B
+const int IN3 = 27;
+const int IN4 = 26;
 
-const int M1_A = 12;
-const int M1_B = 14;
-const int M2_A = 27;
-const int M2_B = 26;
+const int S1 = 25;
+const int S2 = 33;
 
-float linha1 = 0;
-float linha2 = 0;
-float linha3 = 0;
-float linha4 = 0;
+int linha1 = 0;
+int linha2 = 0;
 
-int speed_a = 0, speed_b = 0, speed_c = 0;
+Motors Robo(IN1, IN2, IN3, IN4, 1500, 1000, 12, 0, 1, 2, 3);
 
-void setup(){
+void setup() {
+    Serial.begin(115200);
 
+    pinMode(S1, INPUT);
+    pinMode(S2, INPUT);
+
+    Robo.stop();
 }
 
-void loop(){
-    
+void loop() {
+    linha1 = analogRead(S1);
+    linha2 = analogRead(S1);
+
+    if(linha1 <= 100 and linha2 <= 100){
+        Robo.front();
+    }
+
+    if(linha1 <= 100 and linha2 > 100){
+        Robo.behind_ma();
+        Robo.stop_mb();
+    }
+
+    if(linha1 > 100 and linha2 <= 100){
+        Robo.behind_mb();
+        Robo.stop_ma();
+    }
+
+
+    Serial.print("Lado1: ");
+    Serial.println(analogRead(S1));
+
+    Serial.print("Lado2: ");
+    Serial.println(analogRead(S2));
+
+    delay(2000);
 }

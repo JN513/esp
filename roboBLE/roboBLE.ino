@@ -20,7 +20,7 @@ const int IN4 = 26;
 
 bool deviceConnected = false;
 
-Motors Robo(IN1, IN2, IN3, IN4, 4095, 1000, 12, 0, 1, 2, 3);
+Motors Robo(IN1, IN2, IN3, IN4, 1950, 1000, 12, 0, 1, 2, 3);
 
 char key, previouskey = ' ';
 
@@ -165,6 +165,8 @@ class Callbacks: public BLECharacteristicCallbacks {
 void setup() {
     Serial.begin(115200);
     Serial.println("The device started, now you can pair it with bluetooth!");
+
+    Robo.stop();
 
     BLEDevice::init("Robo");
     BLEServer *pServer = BLEDevice::createServer();
